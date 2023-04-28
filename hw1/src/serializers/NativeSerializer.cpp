@@ -1,14 +1,14 @@
 #include "NativeSerializer.h"
 
-DataForBoost::DataForBoost(TestData testData)
+DataForBinarySerialization::DataForBinarySerialization(TestData testData)
  : TestData(std::move(testData)) {}
 
-void DataForBoost::save(std::ostringstream &oss) {
+void DataForBinarySerialization::save(std::ostringstream &oss) {
     boost::archive::binary_oarchive oa(oss);
     oa &*(this);
 }
 
-void DataForBoost::load(std::ostringstream &oss) {
+void DataForBinarySerialization::load(std::ostringstream &oss) {
     std::string str_data = oss.str();
     std::istringstream iss(str_data);
     boost::archive::binary_iarchive ia(iss);
@@ -16,7 +16,7 @@ void DataForBoost::load(std::ostringstream &oss) {
 }
 
 template <class Archive>
-void DataForBoost::serialize(Archive& archive, const unsigned int version) {
+void DataForBinarySerialization::serialize(Archive& archive, const unsigned int version) {
     archive &IntField;
     archive &Int64Field;
     archive &DoubleField;
@@ -26,7 +26,7 @@ void DataForBoost::serialize(Archive& archive, const unsigned int version) {
 }
 
 std::string NativeSerializer::Serialize(const TestData &testData) {
-    DataForBoost data(testData);
+    DataForBinarySerialization data(testData);
     std::ostringstream oss;
     data.save(oss);
     return oss.str();
@@ -34,7 +34,7 @@ std::string NativeSerializer::Serialize(const TestData &testData) {
 
 TestData NativeSerializer::Deserialize(const std::string& serializedData) {
     std::ostringstream oss(serializedData);
-    DataForBoost data;
+    DataForBinarySerialization data;
     data.load(oss);
     return data;
 }

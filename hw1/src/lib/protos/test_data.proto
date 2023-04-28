@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+message MapFieldEntry {
+    required string Key = 1;
+    required int32 Value = 2;
+}
+
+message ProtoTestData {
+  required int32 IntField = 1;
+  required int64 Int64Field = 2;
+  required double DoubleField = 3;
+  required string StrField = 4;
+  repeated int32 VectorField = 5;
+  repeated MapFieldEntry MapField = 6;
+}

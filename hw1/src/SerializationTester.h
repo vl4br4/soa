@@ -1,3 +1,5 @@
+#pragma once
+
 #include "serializers/Serializer.h"
 #include <memory>
 

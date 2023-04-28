@@ -7,6 +7,11 @@ RUN apt-get update && \
       cmake
 
 ADD ./src /app/src
+
+WORKDIR /app/src/lib/protobuf/build
+
+RUN make install
+
 WORKDIR /app/build
 
 RUN cmake ../src && make

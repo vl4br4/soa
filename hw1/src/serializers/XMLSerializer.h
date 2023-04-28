@@ -1,15 +1,16 @@
 #include "Serializer.h"
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 #include <sstream>
 
-class DataForBinarySerialization : public TestData {
+
+class DataForXMLSerialization : public TestData {
     friend class boost::serialization::access;
 public:
-    DataForBinarySerialization() = default;
-    DataForBinarySerialization(TestData testData);
+    DataForXMLSerialization() = default;
+    DataForXMLSerialization(TestData testData);
 
     template <class Archive>
     void serialize(Archive& archive, const unsigned int version);
@@ -17,7 +18,7 @@ public:
     void load(std::ostringstream &oss);
 };
 
-class NativeSerializer : public Serializer {
+class XMLSerializer : public Serializer {
 public:
     std::string Serialize(const TestData& testData) override;
     TestData Deserialize(const std::string& serializedData) override;
