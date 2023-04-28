@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  server:
+    image: temp
+    expose:
+      - "2000/udp"
+    ports:
+      - 2000:2000
+    environment:
+      PORT: 2000
+    command: ./main
