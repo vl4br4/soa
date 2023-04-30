@@ -24,9 +24,7 @@ const static std::unordered_map<std::string, std::shared_ptr<Serializer>> kSeria
 
 int main() {
     GetResultController controller(&kSerializers);
-    ProxyServer server(std::getenv("PORT") == nullptr ? 2000 : std::stoi(std::getenv("PORT")), std::move(controller));
+    ProxyServer server(std::getenv("PORT") == nullptr ? 2000 : std::stoi(std::getenv("PO")), std::move(controller));
     server.Start();
-    // SerializationTester tester;
-    // tester.Test(kSerializers.at("mpack"), "mpack");
     return 0;
 }
