@@ -1,10 +1,10 @@
 #include "ProtoSerializer.h"
-#include "../lib/protos/test_data.pb.h"
+// #include "../lib/protos/test_data.pb.h"
 #include <string>
 
 
 std::string ProtoSerializer::Serialize(const TestData &testData) {
-    ProtoTestData protoTestData;
+    // ProtoTestData protoTestData;
     // protoTestData.set_intfield(testData.IntField);
     // protoTestData.set_int64field(testData.Int64Field);
     // protoTestData.set_doublefield(testData.DoubleField);

@@ -19,6 +19,8 @@ struct TestData {
     int GetBytesSize() const;
 };
 
+std::ostream& operator<<(std::ostream& os, const TestData& testData);
+
 class Serializer {
 public:
     virtual std::string Serialize(const TestData&) = 0;
