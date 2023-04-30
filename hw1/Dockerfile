@@ -10,6 +10,7 @@ RUN apt-get update && \
 ADD ./src /app/src
 
 WORKDIR /app/src/lib
+RUN rm -rf *
 RUN git clone https://github.com/msgpack/msgpack-c.git
 RUN git clone https://github.com/nlohmann/json.git
 RUN git clone https://github.com/Gregwar/mongoose-cpp.git
