@@ -1,4 +1,3 @@
-#include <string>
 #include "proxy.h"
 #include "serializers/NativeSerializer.h"
 #include "serializers/XMLSerializer.h"
@@ -8,9 +7,6 @@
 #include "serializers/AvroSerializer.h"
 #include "serializers/MessagePackSerializer.h"
 #include "SerializationTester.h"
-#include <nlohmann/json.hpp>
-#include "yaml-cpp/yaml.h"
-#include "avro/Decoder.hh"
 
 
 const static std::unordered_map<std::string, std::shared_ptr<Serializer>> kSerializers = {
