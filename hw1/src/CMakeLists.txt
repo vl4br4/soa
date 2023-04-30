@@ -22,19 +22,12 @@ serializers/YamlSerializer.h serializers/YamlSerializer.cpp
 serializers/AvroSerializer.h serializers/AvroSerializer.cpp
 serializers/MessagePackSerializer.h serializers/MessagePackSerializer.cpp)
 
-
 project(serialization_tools_tester)
 
 find_package(Boost COMPONENTS program_options serialization REQUIRED)
 set(nlohmann_json_DIR "lib/json/build")
 find_package(nlohmann_json REQUIRED)
 find_package(yaml-cpp REQUIRED)
-
-
-# find_package(Protobuf REQUIRED)
-
-# add_library(protos lib/protos/test_data.pb.cc lib/protos/test_data.pb.h)
-# TARGET_LINK_LIBRARIES(protos LINK_PUBLIC protobuf)
 
 
 TARGET_LINK_LIBRARIES(main LINK_PUBLIC ${Boost_LIBRARIES})

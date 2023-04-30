@@ -20,7 +20,7 @@ const static std::unordered_map<std::string, std::shared_ptr<Serializer>> kSeria
 
 int main() {
     GetResultController controller(&kSerializers);
-    ProxyServer server(std::getenv("PORT") == nullptr ? 2000 : std::stoi(std::getenv("PO")), std::move(controller));
+    ProxyServer server(std::getenv("PORT") == nullptr ? 2000 : std::stoi(std::getenv("PORT")), std::move(controller));
     server.Start();
     return 0;
 }

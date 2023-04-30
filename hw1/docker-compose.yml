@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   server:
-    image: temp
+    image: cpp_sd
     expose:
       - "2000/udp"
     ports:

@@ -1,6 +1,0 @@
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/edit_cache.dir
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/rebuild_cache.dir
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/list_install_components.dir
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/install.dir
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/install/local.dir
-/home/vlabra/hse/soa/hw1/src/lib/msgpack-c/CMakeFiles/install/strip.dir
