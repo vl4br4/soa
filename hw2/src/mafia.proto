@@ -8,7 +8,7 @@ service MafiaGame {
     rpc EndTheDay(EndDayRequest) returns (EndDayResponse);
     rpc MafiaKill(MafiaKillRequest) returns (MafiaKillResponse);
     rpc DetectiveCheck(DetectiveCheckRequest) returns (DetectiveCheckResponse);
-    rpc Follow(FollowRequest) returns (stream Update);
+    rpc Follow(FollowRequest) returns (Update);
 }
 
 message FollowRequest {
@@ -21,6 +21,8 @@ enum GameEvent {
     VotedKill = 2;
     VotedNoKill = 3;
     EndOfNight = 4;
+    PlayerJoin = 5;
+    NoUpdate = 6;
 }
 
 message Update {

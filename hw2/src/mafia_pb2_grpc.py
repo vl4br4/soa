@@ -39,7 +39,7 @@ class MafiaGameStub(object):
                 request_serializer=mafia__pb2.DetectiveCheckRequest.SerializeToString,
                 response_deserializer=mafia__pb2.DetectiveCheckResponse.FromString,
                 )
-        self.Follow = channel.unary_stream(
+        self.Follow = channel.unary_unary(
                 '/mafia.MafiaGame/Follow',
                 request_serializer=mafia__pb2.FollowRequest.SerializeToString,
                 response_deserializer=mafia__pb2.Update.FromString,
@@ -113,7 +113,7 @@ def add_MafiaGameServicer_to_server(servicer, server):
                     request_deserializer=mafia__pb2.DetectiveCheckRequest.FromString,
                     response_serializer=mafia__pb2.DetectiveCheckResponse.SerializeToString,
             ),
-            'Follow': grpc.unary_stream_rpc_method_handler(
+            'Follow': grpc.unary_unary_rpc_method_handler(
                     servicer.Follow,
                     request_deserializer=mafia__pb2.FollowRequest.FromString,
                     response_serializer=mafia__pb2.Update.SerializeToString,
@@ -224,7 +224,7 @@ class MafiaGame(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/mafia.MafiaGame/Follow',
+        return grpc.experimental.unary_unary(request, target, '/mafia.MafiaGame/Follow',
             mafia__pb2.FollowRequest.SerializeToString,
             mafia__pb2.Update.FromString,
             options, channel_credentials,

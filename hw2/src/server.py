@@ -42,8 +42,10 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
         self.lock = Lock()
         self.events_queues = dict()
         self.role_to_str = {mafia_pb2.MafiaRole.Red: "Red", mafia_pb2.MafiaRole.Detective: "Detective", mafia_pb2.MafiaRole.Mafia: "Mafia"}
+        self.i = 0
 
     def Join(self, request, context):
+        print('suka3')
         with self.lock:
             if self.is_game_started:
                 return mafia_pb2.JoinResponse(Error = 'Game has already started')
@@ -51,6 +53,9 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
                 return mafia_pb2.JoinResponse(Error = 'This name is already taken. Please, choose another')
             self.players.add(request.Username)
             self.alive_players.add(request.Username)
+            self.events_queues[request.Username] = queue.Queue()
+            print('suka2')
+            self.notify_players(update = mafia_pb2.Update(Message = request.Username, Event = mafia_pb2.GameEvent.PlayerJoin))
             if len(self.players) == self.players_to_start:
                 for q in self.events_queues:
                     self.events_queues[q].put(mafia_pb2.Update(Event = mafia_pb2.GameEvent.GameStarts, Message = self.assign_role(q)))
@@ -75,6 +80,8 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
             return mafia_pb2.VoteKillResponse()
         
     def EndTheDay(self, request, context):
+        print('hell no', i, flush=True)
+        i += 1
         with self.lock:
             err = self.check_possibility(request.Username)
             if err != "":
@@ -120,13 +127,21 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
             
 
     def Follow(self, request, context):
-        with self.lock:
             self.events_queues[request.Username] = queue.Queue()
-        while True:
-            update = self.events_queues[request.Username].get(block=True)
-            yield update
-            if update.IsGameEnd:
-                return
+        # while True:
+            print('suuukaa', flush=True)
+            if self.events_queues[request.Username].qsize() > 0:
+                print('suuukaa1', flush=True)
+                update = self.events_queues[request.Username].get()
+                print(update)
+                return update
+            else:
+                print('suuukaa2', flush=True)
+                return mafia_pb2.Update(Event = mafia_pb2.GameEvent.NoUpdate)
+                # with self.lock:
+                #     if update.IsGameEnd:
+                #         return
+            # time.sleep(1)
 
     def swith_round(self):
         msg = 'This night player ' + self.round.nightly_killed_player + ' was killed. '
@@ -147,6 +162,7 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
     def notify_players(self, update):
         for q_num in self.events_queues:
             self.events_queues[q_num].put(update)
+            print('suka1')
 
     def check_possibility(self, username):
         if username not in self.players:
@@ -181,6 +197,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mafia_pb2_grpc.add_MafiaGameServicer_to_server(MafiaServer(), server)
     server.add_insecure_port("localhost:50051")
+    print('Running...')
     server.start()
     server.wait_for_termination()
 

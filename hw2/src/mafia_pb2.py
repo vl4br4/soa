@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bmafia.proto\x12\x05mafia\"!\n\rFollowRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"c\n\x06Update\x12\x0f\n\x07Message\x18\x01 \x01(\t\x12\x1f\n\x05\x45vent\x18\x02 \x01(\x0e\x32\x10.mafia.GameEvent\x12\x14\n\x0cKilledPlayer\x18\x03 \x01(\t\x12\x11\n\tIsGameEnd\x18\x04 \x01(\x08\"\x1f\n\x0bJoinRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"!\n\rEndDayRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"\x1f\n\x0e\x45ndDayResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"\x1d\n\x0cJoinResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"$\n\x0fVoteKillRequest\x12\x11\n\tWhoToKill\x18\x01 \x01(\t\"!\n\x10VoteKillResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"7\n\x10MafiaKillRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x11\n\tWhoToKill\x18\x02 \x01(\t\"\"\n\x11MafiaKillResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"+\n\x15\x44\x65tectiveCheckRequest\x12\x12\n\nWhoToCheck\x18\x01 \x01(\t\"8\n\x16\x44\x65tectiveCheckResponse\x12\x0f\n\x07Message\x18\x01 \x01(\t\x12\r\n\x05\x45rror\x18\x02 \x01(\t\"O\n\x0cVotingResult\x12\x1a\n\x12IsSomebodyExecuted\x18\x01 \x01(\x08\x12\r\n\x05\x45rror\x18\x02 \x01(\t\x12\x14\n\x0cWhoWasKilled\x18\x03 \x01(\t*Y\n\tGameEvent\x12\x0e\n\nGameStarts\x10\x00\x12\x0c\n\x08\x45ndOfDay\x10\x01\x12\r\n\tVotedKill\x10\x02\x12\x0f\n\x0bVotedNoKill\x10\x03\x12\x0e\n\nEndOfNight\x10\x04*8\n\tMafiaRole\x12\t\n\x05Mafia\x10\x00\x12\x07\n\x03Red\x10\x01\x12\r\n\tDetective\x10\x02\x12\x08\n\x04\x44\x65\x61\x64\x10\x03\x32\xf3\x02\n\tMafiaGame\x12/\n\x04Join\x12\x12.mafia.JoinRequest\x1a\x13.mafia.JoinResponse\x12;\n\x08VoteKill\x12\x16.mafia.VoteKillRequest\x1a\x17.mafia.VoteKillResponse\x12\x38\n\tEndTheDay\x12\x14.mafia.EndDayRequest\x1a\x15.mafia.EndDayResponse\x12>\n\tMafiaKill\x12\x17.mafia.MafiaKillRequest\x1a\x18.mafia.MafiaKillResponse\x12M\n\x0e\x44\x65tectiveCheck\x12\x1c.mafia.DetectiveCheckRequest\x1a\x1d.mafia.DetectiveCheckResponse\x12/\n\x06\x46ollow\x12\x14.mafia.FollowRequest\x1a\r.mafia.Update0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bmafia.proto\x12\x05mafia\"!\n\rFollowRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"c\n\x06Update\x12\x0f\n\x07Message\x18\x01 \x01(\t\x12\x1f\n\x05\x45vent\x18\x02 \x01(\x0e\x32\x10.mafia.GameEvent\x12\x14\n\x0cKilledPlayer\x18\x03 \x01(\t\x12\x11\n\tIsGameEnd\x18\x04 \x01(\x08\"\x1f\n\x0bJoinRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"!\n\rEndDayRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\"\x1f\n\x0e\x45ndDayResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"\x1d\n\x0cJoinResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"$\n\x0fVoteKillRequest\x12\x11\n\tWhoToKill\x18\x01 \x01(\t\"!\n\x10VoteKillResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"7\n\x10MafiaKillRequest\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x11\n\tWhoToKill\x18\x02 \x01(\t\"\"\n\x11MafiaKillResponse\x12\r\n\x05\x45rror\x18\x01 \x01(\t\"+\n\x15\x44\x65tectiveCheckRequest\x12\x12\n\nWhoToCheck\x18\x01 \x01(\t\"8\n\x16\x44\x65tectiveCheckResponse\x12\x0f\n\x07Message\x18\x01 \x01(\t\x12\r\n\x05\x45rror\x18\x02 \x01(\t\"O\n\x0cVotingResult\x12\x1a\n\x12IsSomebodyExecuted\x18\x01 \x01(\x08\x12\r\n\x05\x45rror\x18\x02 \x01(\t\x12\x14\n\x0cWhoWasKilled\x18\x03 \x01(\t*w\n\tGameEvent\x12\x0e\n\nGameStarts\x10\x00\x12\x0c\n\x08\x45ndOfDay\x10\x01\x12\r\n\tVotedKill\x10\x02\x12\x0f\n\x0bVotedNoKill\x10\x03\x12\x0e\n\nEndOfNight\x10\x04\x12\x0e\n\nPlayerJoin\x10\x05\x12\x0c\n\x08NoUpdate\x10\x06*8\n\tMafiaRole\x12\t\n\x05Mafia\x10\x00\x12\x07\n\x03Red\x10\x01\x12\r\n\tDetective\x10\x02\x12\x08\n\x04\x44\x65\x61\x64\x10\x03\x32\xf1\x02\n\tMafiaGame\x12/\n\x04Join\x12\x12.mafia.JoinRequest\x1a\x13.mafia.JoinResponse\x12;\n\x08VoteKill\x12\x16.mafia.VoteKillRequest\x1a\x17.mafia.VoteKillResponse\x12\x38\n\tEndTheDay\x12\x14.mafia.EndDayRequest\x1a\x15.mafia.EndDayResponse\x12>\n\tMafiaKill\x12\x17.mafia.MafiaKillRequest\x1a\x18.mafia.MafiaKillResponse\x12M\n\x0e\x44\x65tectiveCheck\x12\x1c.mafia.DetectiveCheckRequest\x1a\x1d.mafia.DetectiveCheckResponse\x12-\n\x06\x46ollow\x12\x14.mafia.FollowRequest\x1a\r.mafia.Updateb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'mafia_pb2', globals())
@@ -21,9 +21,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _GAMEEVENT._serialized_start=640
-  _GAMEEVENT._serialized_end=729
-  _MAFIAROLE._serialized_start=731
-  _MAFIAROLE._serialized_end=787
+  _GAMEEVENT._serialized_end=759
+  _MAFIAROLE._serialized_start=761
+  _MAFIAROLE._serialized_end=817
   _FOLLOWREQUEST._serialized_start=22
   _FOLLOWREQUEST._serialized_end=55
   _UPDATE._serialized_start=57
@@ -50,6 +50,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _DETECTIVECHECKRESPONSE._serialized_end=557
   _VOTINGRESULT._serialized_start=559
   _VOTINGRESULT._serialized_end=638
-  _MAFIAGAME._serialized_start=790
-  _MAFIAGAME._serialized_end=1161
+  _MAFIAGAME._serialized_start=820
+  _MAFIAGAME._serialized_end=1189
 # @@protoc_insertion_point(module_scope)
