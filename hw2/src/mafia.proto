@@ -1,0 +1,88 @@
+syntax = "proto3";
+package mafia;
+
+
+service MafiaGame {
+    rpc Join (JoinRequest) returns (JoinResponse);
+    rpc VoteKill(VoteKillRequest) returns (VoteKillResponse);
+    rpc EndTheDay(EndDayRequest) returns (EndDayResponse);
+    rpc MafiaKill(MafiaKillRequest) returns (MafiaKillResponse);
+    rpc DetectiveCheck(DetectiveCheckRequest) returns (DetectiveCheckResponse);
+    rpc Follow(FollowRequest) returns (stream Update);
+}
+
+message FollowRequest {
+    string Username = 1;
+}
+
+enum GameEvent {
+    GameStarts = 0;
+    EndOfDay = 1;
+    VotedKill = 2;
+    VotedNoKill = 3;
+    EndOfNight = 4;
+}
+
+message Update {
+    string Message = 1;
+    GameEvent Event = 2;
+    string KilledPlayer = 3;
+    bool IsGameEnd = 4;
+}
+
+message JoinRequest {
+    string Username = 1;
+}
+
+message EndDayRequest {
+    string Username = 1;
+}
+
+message EndDayResponse {
+    string Error = 1;
+}
+
+enum MafiaRole {
+    Mafia = 0;
+    Red = 1;
+    Detective = 2;
+    Dead = 3;
+}
+
+message JoinResponse {
+    string Error = 1;
+}
+
+message VoteKillRequest {
+    string WhoToKill = 1;
+}
+
+message VoteKillResponse {
+    string Error = 1;
+}
+
+message MafiaKillRequest {
+    string Username = 1;
+    string WhoToKill = 2;
+}
+
+message MafiaKillResponse {
+    string Error = 1;
+}
+
+message DetectiveCheckRequest {
+    string WhoToCheck = 1;
+}
+
+message DetectiveCheckResponse {
+    string Message = 1;
+    string Error = 2;
+}
+
+message VotingResult {
+    bool IsSomebodyExecuted = 1;
+    string Error = 2;
+    string WhoWasKilled = 3;
+}
+
+//python3 -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. mafia.proto
