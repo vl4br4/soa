@@ -1,7 +1,6 @@
 syntax = "proto3";
 package mafia;
 
-import "google/protobuf/empty.proto";
 
 service MafiaGame {
     rpc Join (JoinRequest) returns (JoinResponse);
@@ -10,11 +9,12 @@ service MafiaGame {
     rpc MafiaKill(MafiaKillRequest) returns (MafiaKillResponse);
     rpc DetectiveCheck(DetectiveCheckRequest) returns (DetectiveCheckResponse);
     rpc Follow(FollowRequest) returns (stream Update);
-    rpc GetPlayers(google.protobuf.Empty) returns (GetPlayersResponse);
+    rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
 }
 
 message FollowRequest {
     string Username = 1;
+    int32 SessionId = 2;
 }
 
 enum GameEvent {
@@ -31,6 +31,8 @@ message Update {
     GameEvent Event = 2;
     string KilledPlayer = 3;
     bool IsGameEnd = 4;
+    bool MafiaWin = 5;
+    int32 SessionId = 6;
 }
 
 message JoinRequest {
@@ -39,6 +41,7 @@ message JoinRequest {
 
 message EndDayRequest {
     string Username = 1;
+    int32 SessionId = 2;
 }
 
 message EndDayResponse {
@@ -52,6 +55,10 @@ enum MafiaRole {
     Dead = 3;
 }
 
+message GetPlayersRequest {
+    uint32 SessionId = 1;
+}
+
 message GetPlayersResponse {
     repeated string Usernames = 1;
     repeated string Roles = 2;
@@ -59,11 +66,13 @@ message GetPlayersResponse {
 
 message JoinResponse {
     string Error = 1;
+    int32 SessionId = 2;
 }
 
 message VoteKillRequest {
     string Username = 1;
     string WhoToKill = 2;
+    int32 SessionId = 3;
 }
 
 message VoteKillResponse {
@@ -73,6 +82,7 @@ message VoteKillResponse {
 message MafiaKillRequest {
     string Username = 1;
     string WhoToKill = 2;
+    int32 SessionId = 3;
 }
 
 message MafiaKillResponse {
@@ -82,6 +92,7 @@ message MafiaKillResponse {
 message DetectiveCheckRequest {
     string Username = 1;
     string WhoToCheck = 2;
+    int32 SessionId = 3;
 }
 
 message DetectiveCheckResponse {

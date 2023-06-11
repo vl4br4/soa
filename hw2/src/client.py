@@ -5,6 +5,7 @@ import argparse
 from threading import Thread
 from threading import Lock
 import time
+import random
 
 
 class MafiaClient:
@@ -17,6 +18,7 @@ class MafiaClient:
                           'reveal --username <username>',
                           'commands?',
                           'players'
+                          'random'
                           'exit']
         self.parsers = dict()
         self.role = mafia_pb2.MafiaRole
@@ -30,6 +32,7 @@ class MafiaClient:
         self.lock = Lock()
         self.enter_msg = '\nPlease, enter command(to see available commands type "commands?"):\n> '
         self.role_to_str = {mafia_pb2.MafiaRole.Red: "Red", mafia_pb2.MafiaRole.Detective: "Detective", mafia_pb2.MafiaRole.Mafia: "Mafia"}
+        self.session_id = 0
         self.channel = grpc.insecure_channel('localhost:50051')
 
     def initialize_parsers(self):
@@ -44,12 +47,13 @@ class MafiaClient:
         self.parsers['reveal'].add_argument('--username', type=str)
         self.parsers['commands?'] = argparse.ArgumentParser(description='Check avaiable commands')
         self.parsers['exit'] = argparse.ArgumentParser(description='Exit the game')
+        self.parsers['random'] = argparse.ArgumentParser(description='Random turn')
         self.parsers['players'] = argparse.ArgumentParser(description='Get players list')
 
     def wait_and_parse_updates(self):
         try:
             stub = mafia_pb2_grpc.MafiaGameStub(self.channel)
-            for update in stub.Follow(mafia_pb2.FollowRequest(Username = self.username)):
+            for update in stub.Follow(mafia_pb2.FollowRequest(Username = self.username, SessionId = self.session_id)):
                 time.sleep(1)
                 with self.lock:
                     self.correct_inp_output()
@@ -65,7 +69,10 @@ class MafiaClient:
                     elif update.Event == mafia_pb2.GameEvent.VotedKill:
                         print('Players made their votes.', "\"" + update.Message + "\"", 'was killed. Please end the day if you are ready')
                         if update.IsGameEnd:
-                            print('End of the game. Mafia lost!')
+                            if update.MafiaWin:
+                                print('End of the game. Mafia wins!')
+                            else:
+                                print('End of the game. Mafia lost!')
                             self.is_game_end = True
                             continue
                     elif update.Event == mafia_pb2.GameEvent.EndOfDay:
@@ -105,20 +112,21 @@ class MafiaClient:
             self.print_error(response.Error)
         else:
             self.username = username
+            self.session_id = response.SessionId
             print('You have succussfully joined the game!')
             self.follow_for_updates()
 
     def vote_kill(self, who_to_kill):
         if not self.check_possibility():
             return
-        response = self.stub.VoteKill(mafia_pb2.VoteKillRequest(Username = self.username, WhoToKill = who_to_kill))
+        response = self.stub.VoteKill(mafia_pb2.VoteKillRequest(Username = self.username, WhoToKill = who_to_kill, SessionId = self.session_id))
         if response.Error != "":
             self.print_error(response.Error)
 
     def end_the_day(self):
         if not self.check_possibility():
             return
-        response = self.stub.EndTheDay(mafia_pb2.EndDayRequest(Username = self.username))
+        response = self.stub.EndTheDay(mafia_pb2.EndDayRequest(Username = self.username, SessionId = self.session_id))
         if response.Error != "":
             self.print_error(response.Error)
 
@@ -131,7 +139,7 @@ class MafiaClient:
         if not self.is_night_phase:
             print('Wait until night to kill someone')
             return
-        response = self.stub.MafiaKill(mafia_pb2.MafiaKillRequest(Username = self.username, WhoToKill = who_to_kill))
+        response = self.stub.MafiaKill(mafia_pb2.MafiaKillRequest(Username = self.username, WhoToKill = who_to_kill, SessionId = self.session_id))
         if response.Error != "":
             self.print_error(response.Error)
 
@@ -144,11 +152,57 @@ class MafiaClient:
         if not self.is_night_phase:
             print('Wait until night to check someone')
             return
-        response = self.stub.DetectiveCheck(mafia_pb2.DetectiveCheckRequest(Username = self.username, WhoToCheck = who_to_check))
+        response = self.stub.DetectiveCheck(mafia_pb2.DetectiveCheckRequest(Username = self.username, WhoToCheck = who_to_check, SessionId = self.session_id))
         if response.Error != "":
             self.print_error(response.Error)
         else:
             print(response.Message)
+
+    def random_turn(self):
+        if not self.check_possibility():
+            return
+        response = self.stub.GetPlayers(mafia_pb2.GetPlayersRequest(SessionId = self.session_id))
+        players = list(response.Usernames[:])
+        if self.role == mafia_pb2.MafiaRole.Red:
+            if self.is_night_phase:
+                print('No random turn available')
+            else:
+                r = random.randint(0, 1)
+                if r == 0:
+                    self.end_the_day()
+                    print('Ending the day')
+                else:
+                    to_kill = random.choice(players)
+                    self.vote_kill(to_kill)
+                    print('Vote-kill', to_kill)
+        elif self.role == mafia_pb2.MafiaRole.Mafia:
+            if self.is_night_phase:
+                to_kill = random.choice(players)
+                self.mafia_kill(to_kill)
+                print('Mafia-kill', to_kill)
+            else:
+                r = random.randint(0, 1)
+                if r == 0:
+                    self.end_the_day()
+                    print('Ending the day')
+                else:
+                    to_kill = random.choice(players)
+                    self.vote_kill(to_kill)
+                    print('Vote-kill', to_kill)
+        elif self.role == mafia_pb2.MafiaRole.Detective:
+            if self.is_night_phase:
+                to_reveal = random.choice(players)
+                self.detective_check(to_reveal)
+                print('reveal', to_reveal)
+            else:
+                r = random.randint(0, 1)
+                if r == 0:
+                    self.end_the_day()
+                    print('Ending the day')
+                else:
+                    to_kill = random.choice(players)
+                    self.vote_kill(random.choice(players))
+                    print('Vote-kill', to_kill)
 
     def get_players(self):
         if self.is_night_phase and not self.role == mafia_pb2.MafiaRole.Dead:
@@ -206,6 +260,8 @@ class MafiaClient:
                     self.print_available_commands()
                 elif command[0] == 'players':
                     self.get_players()
+                elif command[0] == 'random':
+                    self.random_turn()
                 elif command[0] == 'exit':
                     self.channel.close()
                     return

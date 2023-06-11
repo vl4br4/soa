@@ -2,7 +2,6 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 import mafia_pb2 as mafia__pb2
 
 
@@ -47,7 +46,7 @@ class MafiaGameStub(object):
                 )
         self.GetPlayers = channel.unary_unary(
                 '/mafia.MafiaGame/GetPlayers',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                request_serializer=mafia__pb2.GetPlayersRequest.SerializeToString,
                 response_deserializer=mafia__pb2.GetPlayersResponse.FromString,
                 )
 
@@ -132,7 +131,7 @@ def add_MafiaGameServicer_to_server(servicer, server):
             ),
             'GetPlayers': grpc.unary_unary_rpc_method_handler(
                     servicer.GetPlayers,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    request_deserializer=mafia__pb2.GetPlayersRequest.FromString,
                     response_serializer=mafia__pb2.GetPlayersResponse.SerializeToString,
             ),
     }
@@ -259,7 +258,7 @@ class MafiaGame(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/mafia.MafiaGame/GetPlayers',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            mafia__pb2.GetPlayersRequest.SerializeToString,
             mafia__pb2.GetPlayersResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
