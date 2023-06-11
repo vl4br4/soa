@@ -2,6 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 import mafia_pb2 as mafia__pb2
 
 
@@ -39,10 +40,15 @@ class MafiaGameStub(object):
                 request_serializer=mafia__pb2.DetectiveCheckRequest.SerializeToString,
                 response_deserializer=mafia__pb2.DetectiveCheckResponse.FromString,
                 )
-        self.Follow = channel.unary_unary(
+        self.Follow = channel.unary_stream(
                 '/mafia.MafiaGame/Follow',
                 request_serializer=mafia__pb2.FollowRequest.SerializeToString,
                 response_deserializer=mafia__pb2.Update.FromString,
+                )
+        self.GetPlayers = channel.unary_unary(
+                '/mafia.MafiaGame/GetPlayers',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=mafia__pb2.GetPlayersResponse.FromString,
                 )
 
 
@@ -85,6 +91,12 @@ class MafiaGameServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetPlayers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MafiaGameServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -113,10 +125,15 @@ def add_MafiaGameServicer_to_server(servicer, server):
                     request_deserializer=mafia__pb2.DetectiveCheckRequest.FromString,
                     response_serializer=mafia__pb2.DetectiveCheckResponse.SerializeToString,
             ),
-            'Follow': grpc.unary_unary_rpc_method_handler(
+            'Follow': grpc.unary_stream_rpc_method_handler(
                     servicer.Follow,
                     request_deserializer=mafia__pb2.FollowRequest.FromString,
                     response_serializer=mafia__pb2.Update.SerializeToString,
+            ),
+            'GetPlayers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPlayers,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=mafia__pb2.GetPlayersResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -224,8 +241,25 @@ class MafiaGame(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/mafia.MafiaGame/Follow',
+        return grpc.experimental.unary_stream(request, target, '/mafia.MafiaGame/Follow',
             mafia__pb2.FollowRequest.SerializeToString,
             mafia__pb2.Update.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetPlayers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/mafia.MafiaGame/GetPlayers',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            mafia__pb2.GetPlayersResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
