@@ -223,7 +223,7 @@ class MafiaClient:
 
     def publish_message(self, command):
         if self.role == mafia_pb2.MafiaRole.Dead:
-            print('You can\'t use chat when you are dead')
+            print('You can\'t use when you are dead')
             return
         if self.is_night_phase and self.role != mafia_pb2.MafiaRole.Mafia:
             print('You can\'t use chat in the night time')

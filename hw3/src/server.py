@@ -44,7 +44,6 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
         self.session_cnt = 0
         self.sessions = dict()
         self.sessions[self.session_cnt] = MafiaServer.GameSession()
-        time.sleep(30)
         self.chat_server = chat.ChatServer()
         self.chat_server.init_new_chat(self.session_cnt)
 

@@ -18,7 +18,7 @@ class ChatServer:
         ChatServer.stub.PublishMessage(mafia_pb2.PublishMessageRequest(Username = msg[1], Message = ' '.join(msg[2:]), SessionId = int(msg[0])))
 
     def init_new_chat(self, session_id):
-        self.connections.append(pika.BlockingConnection(pika.ConnectionParameters(host='0.0.0.0', port=5672)))
+        self.connections.append(pika.BlockingConnection(pika.ConnectionParameters()))
         channel = self.connections[-1].channel()
         q_name = f'mafia_chat_{session_id}'
         channel.queue_declare(queue=q_name)
@@ -32,7 +32,7 @@ class ChatServer:
     
 class ChatClient:
     def __init__(self, session_id):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='0.0.0.0', port=5672))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters())
         self.channel = self.connection.channel()
         self.q_name = f'mafia_chat_{session_id}'
         self.channel.queue_declare(queue=self.q_name)
