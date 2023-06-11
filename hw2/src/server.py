@@ -197,7 +197,7 @@ class MafiaServer(mafia_pb2_grpc.MafiaGameServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mafia_pb2_grpc.add_MafiaGameServicer_to_server(MafiaServer(), server)
-    server.add_insecure_port("localhost:50051")
+    server.add_insecure_port("[::]:50051")
     print('Running...')
     server.start()
     server.wait_for_termination()

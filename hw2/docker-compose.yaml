@@ -4,3 +4,4 @@ services:
     image: vlabra228/mafia-server
     ports:
       - "50051:50051/tcp"
+    hostname: localhost
