@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    hostname: localhost
+    ports:
+        - 15672:15672
+        - 5672:5672
+    networks:
+      - proxynet
+  server:
+    image: vlabra228/mafia-server
+    ports:
+      - "50051:50051/tcp"
+    hostname: localhost
+    depends_on:
+      - rabbitmq
+    networks:
+      - proxynet
+
+networks:
+  proxynet:
+    name: custom_network
+

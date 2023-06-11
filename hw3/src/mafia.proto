@@ -1,0 +1,122 @@
+syntax = "proto3";
+package mafia;
+
+
+service MafiaGame {
+    rpc Join (JoinRequest) returns (JoinResponse);
+    rpc VoteKill(VoteKillRequest) returns (VoteKillResponse);
+    rpc EndTheDay(EndDayRequest) returns (EndDayResponse);
+    rpc MafiaKill(MafiaKillRequest) returns (MafiaKillResponse);
+    rpc DetectiveCheck(DetectiveCheckRequest) returns (DetectiveCheckResponse);
+    rpc Follow(FollowRequest) returns (stream Update);
+    rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
+    rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
+}
+
+message FollowRequest {
+    string Username = 1;
+    int32 SessionId = 2;
+}
+
+message PublishMessageRequest {
+    string Username = 1;
+    string Message = 2;
+    int32 SessionId = 3;
+}
+
+message PublishMessageResponse {
+    string Error = 1;
+}
+
+enum GameEvent {
+    GameStarts = 0;
+    EndOfDay = 1;
+    VotedKill = 2;
+    VotedNoKill = 3;
+    EndOfNight = 4;
+    PlayerJoin = 5;
+    ChatMessage = 6;
+}
+
+message Update {
+    string Message = 1;
+    GameEvent Event = 2;
+    string KilledPlayer = 3;
+    bool IsGameEnd = 4;
+    bool MafiaWin = 5;
+    int32 SessionId = 6;
+    string Username = 7;
+}
+
+message JoinRequest {
+    string Username = 1;
+}
+
+message EndDayRequest {
+    string Username = 1;
+    int32 SessionId = 2;
+}
+
+message EndDayResponse {
+    string Error = 1;
+}
+
+enum MafiaRole {
+    Mafia = 0;
+    Red = 1;
+    Detective = 2;
+    Dead = 3;
+}
+
+message GetPlayersRequest {
+    uint32 SessionId = 1;
+}
+
+message GetPlayersResponse {
+    repeated string Usernames = 1;
+    repeated string Roles = 2;
+}
+
+message JoinResponse {
+    string Error = 1;
+    int32 SessionId = 2;
+}
+
+message VoteKillRequest {
+    string Username = 1;
+    string WhoToKill = 2;
+    int32 SessionId = 3;
+}
+
+message VoteKillResponse {
+    string Error = 1;
+}
+
+message MafiaKillRequest {
+    string Username = 1;
+    string WhoToKill = 2;
+    int32 SessionId = 3;
+}
+
+message MafiaKillResponse {
+    string Error = 1;
+}
+
+message DetectiveCheckRequest {
+    string Username = 1;
+    string WhoToCheck = 2;
+    int32 SessionId = 3;
+}
+
+message DetectiveCheckResponse {
+    string Message = 1;
+    string Error = 2;
+}
+
+message VotingResult {
+    bool IsSomebodyExecuted = 1;
+    string Error = 2;
+    string WhoWasKilled = 3;
+}
+
+//python3 -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. mafia.proto
