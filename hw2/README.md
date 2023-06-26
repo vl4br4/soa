@@ -1,6 +1,6 @@
 
 Запуск сервера:
-``` docker-compose build && docker-compose up ```
+``` sudo docker-compose build && docker-compose up ```
 
 Запуск клиента:
 ``` bash run_client.sh```

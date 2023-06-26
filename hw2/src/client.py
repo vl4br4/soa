@@ -17,8 +17,9 @@ class MafiaClient:
                           'end-day', 'mafia-kill --username <username>',
                           'reveal --username <username>',
                           'commands?',
-                          'players'
-                          'random'
+                          'players',
+                          'random',
+                          'chat <message>',
                           'exit']
         self.parsers = dict()
         self.role = mafia_pb2.MafiaRole

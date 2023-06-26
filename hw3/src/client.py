@@ -21,7 +21,7 @@ class MafiaClient:
                           'commands?',
                           'players',
                           'random',
-                          'chat <message>'
+                          'chat <message>',
                           'exit']
         self.parsers = dict()
         self.role = mafia_pb2.MafiaRole
